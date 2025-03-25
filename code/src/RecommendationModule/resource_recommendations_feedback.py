@@ -1,16 +1,17 @@
 import pandas as pd
-
+import os
 # --- Data Loading (as in your code) ---
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+DATA_FOLDER = os.path.join(BASE_DIR, "Data")
 def load_data():
     try:
-        df_resources = pd.read_excel("c:/Hackathon2025/aidhp-recom-mind/code/src/RecommendationModule/Data/LocalProviders.xlsx")
+        df_resources = pd.read_excel( os.path.join(DATA_FOLDER, "LocalProviders.xlsx"))
     except FileNotFoundError:
         print("Error: LocalProviders.xlsx not found.")
         df_resources = pd.DataFrame()
 
     try:
-        excel_file = "c:/Hackathon2025/aidhp-recom-mind/code/src/RecommendationModule/Data/CustomerData.xlsx"
+        excel_file = os.path.join(DATA_FOLDER, "CustomerData.xlsx")
         df_organizations = pd.read_excel(excel_file, sheet_name="Customer Profile (Organisation)")
         df_personal_profiles = pd.read_excel(excel_file, sheet_name="Customer Profile (Individual)")
         df_sentiment = pd.read_excel(excel_file, sheet_name="Social Media Sentiment")
