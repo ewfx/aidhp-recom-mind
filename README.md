@@ -128,15 +128,16 @@ https://www.python.org/downloads/
     python code/src/RecommendationModule/manage.py runserver
     ```
 
-## 🏗️ Tech Stack
+## 🏗 Tech Stack
 
 * 🔹   Frontend: Django Templates (HTML/CSS/JavaScript)
 * 🔹   Backend: Django (Python)
 * 🔹   Other:
     * OpenAI API (gpt-4o-mini)
     * Hugging Face Transformers (SamLowe/roberta-base-go_emotions)
+    * HuggingFaceH4/zephyr-7b-beta
     * SpeechRecognition
-    * Pandas, NumPy
+    * Pandas, NumPy
 
 ## 👥 Team
 
