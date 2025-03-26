@@ -3,6 +3,7 @@ import openai
 import pandas as pd
 import speech_recognition as sr
 import requests
+import configparser
 from openai import OpenAI
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -11,13 +12,15 @@ from django.shortcuts import render, redirect
 from main import main_with_sentiment
 
 # Load API key securely
-openai.api_key = os.getenv("OPENAI_API_KEY")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Get project root
 DATA_FOLDER = os.path.join(BASE_DIR, "data")
 EXCEL_FILE = os.path.join(DATA_FOLDER, "CustomerData.xlsx") 
+config = configparser.ConfigParser()
+config.read(os.path.join(BASE_DIR, "utils" ,"config.ini"))
+openai_key = config.get("OPENAI_KEY", "key")
 
 # Initialize OpenAI client
-client = OpenAI(api_key="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")
+client = OpenAI(api_key=openai_key)
 
 # Try loading dataset at startup
 try:
@@ -46,6 +49,8 @@ def login_view(request):
         if username in get_usernames():
             request.session["user"] = username  # Store session
             notification_data = main_with_sentiment(username)
+            if "Best regards" in notification_data:
+                notification_data = notification_data.split("Best regards")[0].strip() + "\nBest regards,"
             request.session["notification"] = notification_data  # Store in session
 
             return redirect("index")
@@ -76,10 +81,10 @@ def get_supported_files(folder_path):
         full_path = os.path.join(folder_path, file)
 
         if file.endswith(".xlsx"):
-#            converted_files = convert_excel_to_text(full_path)
-  #          if converted_files:  # Ensure it's not None
-   #             supported_files.extend(converted_files)  # Append multiple files
-            print("xlsx file bypassed convertion")
+           converted_files = convert_excel_to_text(full_path)
+           if converted_files:  # Ensure it's not None
+               supported_files.extend(converted_files)  # Append multiple files
+            #print("xlsx file bypassed convertion")
         elif file.endswith((".txt", ".csv", ".json")):
             supported_files.append(full_path)
 
@@ -180,7 +185,7 @@ def text_search(request):
         if not query:
             return JsonResponse({"response": "Please enter a valid query."})
 
-        response = generate_ai_response(query + " for customer " + customer_id)
+        response = generate_ai_response(f"customer {customer_id} is asking you a query. Based on the data available, provide a response as financial advisor by understanding their sentiment. Do not ask more questions. Provide user with data points explaining rationale behind your response. Respond based on available information, otherwise tell them that you don't have the answer and they can call customer care. Customer Query is: {query}")
         return JsonResponse({"response": response})
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
