@@ -23,6 +23,7 @@ HyperFin is an AI-driven financial recommendation system designed to provide hyp
 🔗   [PPT](https://github.com/ewfx/aidhp-recom-mind/blob/main/artifacts/demo/Hackathon-2025-RecomMind.pptx)
 
 📹   [Video Demo](/artifacts/demo/Demo%20Hackathon.mp4)
+
 ![Demo Gif](/artifacts/demo/Demo%20Hackathon.gif)
 
 🖼️   Screenshots:
