@@ -10,8 +10,10 @@ function textSearch() {
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("result").value = data.response;
-    });
+        console.log("Response received:", data);
+        document.getElementById("result").innerHTML = marked.parse(data.response);
+    })
+    .catch(error => console.error("Error in textSearch:", error));
 }
 
 function voiceSearch() {

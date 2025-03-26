@@ -3,6 +3,7 @@ import openai
 import pandas as pd
 import speech_recognition as sr
 import requests
+import configparser
 from openai import OpenAI
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -11,13 +12,15 @@ from django.shortcuts import render, redirect
 from main import main_with_sentiment
 
 # Load API key securely
-openai.api_key = os.getenv("OPENAI_API_KEY")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Get project root
 DATA_FOLDER = os.path.join(BASE_DIR, "data")
 EXCEL_FILE = os.path.join(DATA_FOLDER, "CustomerData.xlsx") 
+config = configparser.ConfigParser()
+config.read(os.path.join(BASE_DIR, "utils" ,"config.ini"))
+openai_key = config.get("OPENAI_KEY", "key")
 
 # Initialize OpenAI client
-client = OpenAI(api_key="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")
+client = OpenAI(api_key=openai_key)
 
 # Try loading dataset at startup
 try:
@@ -46,6 +49,8 @@ def login_view(request):
         if username in get_usernames():
             request.session["user"] = username  # Store session
             notification_data = main_with_sentiment(username)
+            if "Best regards" in notification_data:
+                notification_data = notification_data.split("Best regards")[0].strip() + "\nBest regards,"
             request.session["notification"] = notification_data  # Store in session
 
             return redirect("index")
