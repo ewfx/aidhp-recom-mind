@@ -26,11 +26,11 @@ HyperFin is an AI-driven financial recommendation system designed to provide hyp
 
 🖼️   Screenshots:
 * **Login page**
-![img.png](img.png)
+![loginscreen.png](loginscreen.jpg)
 * **Index/Home page**
-![img_1.png](img_1.png)
+![recommendation.jpg](recommendation.jpg)
 * **Questions from customer**
-![img_2.png](img_2.png)
+![chat.jpg](chat.jpg)
 
 ## 💡 Inspiration
 
